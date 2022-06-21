@@ -2,9 +2,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class BrowserActions:
-    def __init__(self, driver) -> None:
+    def __init__(self, driver, baseurl) -> None:
         self.driver = driver
+        self.baseurl = baseurl
     
+    def navigateWithBaseurl(self, path):
+        self.navigateTo(self.baseurl + path)
+
     def navigateTo(self, url):
         self.driver.get(url)
 
