@@ -8,16 +8,13 @@ from src.config.ConfigEnv import ConfigEnv
 def pytest_addoption(parser):
     parser.addoption("--env", action = "store", help ="Define environment to execute test")
 
-@pytest.fixture
-def get_env(request):
-    environment = request.config.getoption("--env")
-    return environment
+@pytest.fixture(scope="session")
+def env(request):
+    return request.config.getoption("--env")
 
-@pytest.fixture
-def environment_config(get_env):
-    config = ConfigEnv(get_env)
-    return config
-
+@pytest.fixture(scope="session")
+def environment_config(env):
+    return ConfigEnv(env)
 
 @pytest.fixture
 def browserActions(environment_config):
