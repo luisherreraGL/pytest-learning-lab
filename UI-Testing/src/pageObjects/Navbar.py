@@ -5,3 +5,6 @@ class Navbar (Base):
 
     def __init__(self, browserActions) -> None:
         super().__init__(browserActions)
+
+    def clickOnContact(self):
+        self.browserActions.click(self.locators.contactUsingLink)

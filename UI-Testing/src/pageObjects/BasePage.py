@@ -1,7 +1,6 @@
 from src.pageObjects.Base import Base
 
 class BasePage (Base):
-    baseurl = "https://demoblaze.com"
     path = ""
     title = ""
 
@@ -9,6 +8,6 @@ class BasePage (Base):
        self.browserActions =  browserActions
 
     def open(self):
+        self.browserActions.navigateWithBaseurl(self.path)
         #quitar baseurl
-        self.browserActions.navigateTo(self.baseurl + self.path)
-        #wait
+        #wait logic 
