@@ -6,7 +6,11 @@ from src.utils.BrowserActions import BrowserActions
 from src.config.ConfigEnv import ConfigEnv
 
 def pytest_addoption(parser):
-    parser.addoption("--env", action = "store", help ="Define environment to execute test")
+    parser.addoption("--env", 
+        action="store",
+        default="dev",
+        choices=("dev", "qa"),
+        help ="Define environment to execute test")
 
 @pytest.fixture(scope="session")
 def env(request):
@@ -24,3 +28,4 @@ def browserActions(environment_config):
     yield browserActions
     print("teardown browserActions")
     driver.close()
+
