@@ -27,5 +27,5 @@ def browserActions(environment_config):
     browserActions = BrowserActions(driver, environment_config.baseurl)
     yield browserActions
     print("teardown browserActions")
-    driver.close()
+    driver.quit()
 
