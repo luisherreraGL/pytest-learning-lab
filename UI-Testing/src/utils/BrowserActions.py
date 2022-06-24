@@ -28,7 +28,7 @@ class BrowserActions:
         return  self.driver.find_element(*locator)
 
     def waitForAvailability (self, locator):
-        errorMessage =  'Element with the locator {0} is not available (exist in the DOM, visible & enabled)'.format(locator)
+        errorMessage =  'Element with the locator {0} is not available (it should exist in the DOM, visible & enabled)'.format(locator)
 
         wait = WebDriverWait(self.driver, self.defaultWaitTimeSeconds)
         wait.until(EC.visibility_of_element_located(locator), errorMessage)
