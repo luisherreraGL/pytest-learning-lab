@@ -18,8 +18,8 @@ class HomePage (BasePage):
 
     @step("Wait for products renderization")
     def waitUntilPageRendersTheProducts(self):
-        self._waitForProductsImages()
         self._waitForProducts()
+        self._waitForProductsImages()
 
     @step("Open Product : {1}")
     def openProduct(self, productName):

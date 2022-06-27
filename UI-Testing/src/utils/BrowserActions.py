@@ -41,7 +41,7 @@ class BrowserActions:
         element.send_keys(text)
 
     def waitForAvailability(self, locator):
-        errorMessage = 'Element with the locator {0} is not available (itexist in the DOM, visible & enabled)'.format(locator)
+        errorMessage = 'Element with the locator {0} is not available (it exists in the DOM, visible & enabled)'.format(locator)
         conditions = [EC.visibility_of_element_located(locator), EC.element_to_be_clickable(locator)]
         self.waitFor(conditions, errorMessage)
 
@@ -81,6 +81,5 @@ class BrowserActions:
         self.waitFor([customCondition], "Could find element: {0} inside of {1}".format(locatorToSearch, containerLocator) )
         element = containerElement.find_element(*locatorToSearch)
         self.waitFor([EC.visibility_of(element)], "Element Inside of {0} is not visible".format(containerLocator))
-
 
         return element

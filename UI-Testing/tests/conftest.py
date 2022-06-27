@@ -5,6 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from src.utils.BrowserActions import BrowserActions
 from src.config.ConfigEnv import ConfigEnv
+from selenium.webdriver.chrome.options import Options
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_exception_interact(node, call, report):

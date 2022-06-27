@@ -1,10 +1,11 @@
+from selectors import SelectSelector
 import time
 import pytest
 import allure
 from src.pageObjects.HomePage import HomePage
 from src.pageObjects.ProductPage import ProductPage
 
-@allure.suite("Extample Test")
+@allure.suite("Example Test")
 @allure.sub_suite('Demo')
 @pytest.mark.smoke
 class ExampleTests:
@@ -33,20 +34,19 @@ class ExampleTests:
         homePage.clickOnNext()
         assert False
 
-    def test_example_navbar(self, browserActions):
+    def test_example_navbar(self, browserActions): 
         homePage = HomePage(browserActions)
         homePage.open()
-        homePage.navbar.clickOnLink("About us")
+        homePage.navbar.clickOnLink("Contact")
         time.sleep(5)
 
-    @pytest.mark.debug
     def test_example_open_product(self, browserActions):
         homePage = HomePage(browserActions)
         homePage.open()
         homePage.waitUntilPageRendersTheProducts()
         #HTC One M9
         #Samsung galaxy s6
-        homePage.openProduct("HTC One M9")
+        homePage.openProduct("Samsung galaxy s6")
         productPage = ProductPage(browserActions)
         productPage.waitUntilPageLoaded()
         time.sleep(5)
