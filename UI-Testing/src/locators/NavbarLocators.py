@@ -1,3 +1,6 @@
 from selenium.webdriver.common.by import By
 class NavbarLocators:
-    contactUsingLink = (By.PARTIAL_LINK_TEXT, "Contact")
+    navbarContainer = (By.ID, "narvbarx")
+
+    def navbarLink(self, linkName):
+        return (By.PARTIAL_LINK_TEXT, linkName)

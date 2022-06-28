@@ -8,8 +8,17 @@ class BasePage (Base):
     def __init__(self, browserActions) -> None:
        self.browserActions =  browserActions
 
-    @step("Load the page")
     def open(self):
-        self.browserActions.navigateWithBaseurl(self.path)
-        #quitar baseurl
-        #wait logic 
+        self._open(self.path)
+        
+    @step("Load the page {1}")
+    def _open(self, path):
+        self.browserActions.navigateWithBaseurl(path)
+        self.waitUntilPageLoaded()
+
+    def waitUntilPageLoaded(self):
+         self._waitUntilPageLoaded(self.path);
+        
+    @step("Wait until page is loaded: {1}")
+    def _waitUntilPageLoaded(self, path):
+         self.browserActions.waitForPageLoaded(path, self.title);
