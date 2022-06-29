@@ -22,3 +22,8 @@ class BasePage (Base):
     @step("Wait until page is loaded: {1}")
     def _waitUntilPageLoaded(self, path):
          self.browserActions.waitForPageLoaded(path, self.title);
+
+    def getAlertText(self):
+        alertText = self.browserActions.getAlertText()
+        self.browserActions.closeAlert()
+        return alertText

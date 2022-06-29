@@ -1,13 +1,28 @@
 from src.pageObjects.BasePage import BasePage
 from src.pageObjects.Navbar import Navbar
-from src.locators.HomeLocators import HomeLocators
+from src.locators.ProductLocators import ProductLocators
 from allure import step
+from src.models.Product import Product
 
 class ProductPage (BasePage):
-    locators = None
+    locators = ProductLocators()
     path = "/prod.html"
     title = "STORE"
 
     def __init__(self, browserActions) -> None:
         super().__init__(browserActions)
         self.navbar = Navbar(browserActions)
+
+    def getProductData(self):
+        name = self.browserActions.getText(self.locators.name)
+        price = self.browserActions.getText(self.locators.price)
+        return Product(name, self.cleanPrice(price))
+
+    def cleanPrice(self, price):
+        priceText =  price[1:]
+        return float(priceText.split()[0])
+
+    def addProduct2Cart(self):
+        self.browserActions.click(self.locators.addButton)
+    
+        

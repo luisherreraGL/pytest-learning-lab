@@ -1,4 +1,3 @@
-from selectors import SelectSelector
 import time
 import pytest
 import allure

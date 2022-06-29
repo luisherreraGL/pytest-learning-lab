@@ -44,3 +44,19 @@ class HomePage (BasePage):
             return len(products) > 0
     
         self.browserActions.waitFor([customCondition], "The page did not renders the products")
+
+    @step("Select Category : {1}")
+    def selectCategory(self, category):
+        element = self.browserActions.findElementInside(self.locators.productsSectionContainer, self.locators.productCategoryLink(category))
+        self.browserActions.scrollTo(element)
+        element.click()
+
+    def openLastProduct(self):
+        self.waitUntilPageRendersTheProducts()
+        products = self.browserActions.findElements(self.locators.productsContainers)
+        lastProduct = products[-1]
+        productLink = self.browserActions.findInsideElement(lastProduct, self.locators.product_link)
+        productLink.click()
+
+    
+

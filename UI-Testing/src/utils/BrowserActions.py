@@ -1,6 +1,8 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from src.utils.AutoScrollHelper import AutoScrollHelper
+from selenium.webdriver.common.alert import Alert
+
 class BrowserActions:
     _DEFAULT_WAIT_TIME_SECONDS = 10
     _DEFAULT_NAVBAR_HEIGHT = 0
@@ -10,6 +12,14 @@ class BrowserActions:
         self.driver = driver
         self.baseurl = baseurl
         self.autoScrollHelper = AutoScrollHelper(driver, self._DEFAULT_NAVBAR_HEIGHT, self._DEFAULT_FOOTER_HEIGHT)
+        self.alert = Alert(driver)
+
+    def getAlertText (self):
+        alert = self.waitFor([EC.alert_is_present()])
+        return self.alert.text
+
+    def closeAlert(self):
+        self.alert.accept()
 
     def navigateWithBaseurl(self, path):
         self.navigateTo(self.baseurl + path)
@@ -53,6 +63,14 @@ class BrowserActions:
 
     def findElements(self, locator):
         return self.driver.find_elements(*locator)
+
+    def findInsideElement(self, element, locator):
+        return element.find_element(*locator)
+    
+    def getText(self, locator):
+        conditions = [EC.visibility_of_element_located(locator)]
+        self.waitFor(conditions)
+        return self.findElement(locator).text
 
     def waitFor(self, conditions, errorMessage="WaitFor Condition Failed", timeoutSeconds = None):
         timeoutSeconds = timeoutSeconds or self._DEFAULT_WAIT_TIME_SECONDS
