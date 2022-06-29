@@ -109,7 +109,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+*-venv
+env-*
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -130,3 +131,4 @@ dmypy.json
 
 reports
 env*
+allure-report
