@@ -17,6 +17,7 @@ class CartTests:
     def test_add_items(self, browserActions):
         expectedTextAlert = "Product added"
         addedProducts = []
+
         homePage = HomePage(browserActions)
         homePage.open()
         homePage.selectCategory("Laptops")
@@ -29,7 +30,6 @@ class CartTests:
 
         alertText = productPage.getAlertText()
         assert alertText == expectedTextAlert
-
         
         homePage.open()
         homePage.selectCategory("Monitors")
@@ -45,15 +45,8 @@ class CartTests:
         productPage.navbar.clickOnLink("Cart")
         cartPage = CartPage(browserActions)
         cartPage.waitUntilPageLoaded()
+
         cartItems = cartPage.getProductsData()
-        for item in cartItems:
-            print(item.name)
-            print(item.price)
-       
-        for item in addedProducts:
-            print(item.name)
-            print(item.price)
-
+        cartTotal = cartPage.getCartTotal()
         self.productAssertions.equalLists(cartItems, addedProducts)
-
-        time.sleep(3)
+        self.productAssertions.priceSumIsEqual(addedProducts, cartTotal)

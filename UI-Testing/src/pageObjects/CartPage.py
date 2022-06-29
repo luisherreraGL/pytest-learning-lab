@@ -31,3 +31,6 @@ class CartPage (BasePage):
             return len(products) > 0
     
         self.browserActions.waitFor([customCondition], "The page did not renders the products")
+    
+    def getCartTotal(self):
+        return float(self.browserActions.getText(self.locators.totalAmount))
