@@ -37,7 +37,7 @@ class CartTests:
 
         productPage.waitUntilPageLoaded()
         productInfo = productPage.getProductData()
-        # addedProducts.append(productInfo)
+        addedProducts.append(productInfo)
         productPage.addProduct2Cart()
 
         alertText = productPage.getAlertText()
@@ -50,6 +50,10 @@ class CartTests:
             print(item.name)
             print(item.price)
        
+        for item in addedProducts:
+            print(item.name)
+            print(item.price)
+
         self.productAssertions.equalLists(cartItems, addedProducts)
 
         time.sleep(3)

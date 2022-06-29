@@ -21,7 +21,7 @@ class CartPage (BasePage):
         for product in products:
             nameColumn = self.browserActions.findInsideElement(product, self.locators.nameColumn)
             priceColumn = self.browserActions.findInsideElement(product, self.locators.priceColumn)
-            productList.append(Product(nameColumn.text, priceColumn.text))
+            productList.append(Product(nameColumn.text, float(priceColumn.text)))
 
         return productList
 
