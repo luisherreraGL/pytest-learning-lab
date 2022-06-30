@@ -41,16 +41,16 @@ class BrowserActions:
     def isDOMReady(self):
         return self.driver.execute_script("return document.readyState == 'complete'")
 
-    def click(self, locator):
+    def click(self, locator, containerLocator = None):
         self.waitForAvailability(locator)
         element = self.findElement(locator)
-        self.scrollTo(element)
+        self.scrollTo(element, containerLocator)
         element.click()
 
-    def typeInto(self, locator, text):
+    def typeInto(self, locator, text, containerLocator = None):
         self.waitForAvailability(locator)
         element = self.findElement(locator)
-        self.scrollTo(element)
+        self.scrollTo(element, containerLocator)
         element.clear()
         element.send_keys(text)
 
@@ -59,8 +59,12 @@ class BrowserActions:
         conditions = [EC.visibility_of_element_located(locator), EC.element_to_be_clickable(locator)]
         self.waitFor(conditions, errorMessage)
 
-    def scrollTo(self, element):
-        self.autoScrollHelper.scrollTo(element)
+    def scrollTo(self, element, containerLocator = None):
+        if containerLocator != None:
+            elementContainer = self.findElement(containerLocator)
+            self.autoScrollHelper.scrollTo(element,elementContainer)
+        else:
+            self.autoScrollHelper.scrollTo(element)
     
     def findElement(self, locator):
         return self.driver.find_element(*locator)

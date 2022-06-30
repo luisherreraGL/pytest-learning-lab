@@ -1,12 +1,12 @@
 from selenium.webdriver.common.by import By
 
 class CartLocators:
+  modalContainer = (By.ID, "orderModal")
   totalAmount =  (By.ID, "totalp")
   tableRows =  (By.CSS_SELECTOR, "#tbodyid tr")
   nameColumn = (By.CSS_SELECTOR, "td:nth-child(2)")
   priceColumn = (By.CSS_SELECTOR, "td:nth-child(3)")
   placeOrderButton = (By.CSS_SELECTOR, 'button[data-toggle="modal"]')
-
   # Payment form
   placeOrderTotal = (By.ID, "totalm")
   nameInput = (By.ID, "name")
@@ -16,3 +16,9 @@ class CartLocators:
   monthInput = (By.ID, "month")
   yearInput = (By.ID, "year")
   purchaseButton = (By.CSS_SELECTOR, "#orderModal  .btn-primary")
+
+  # Confirm payment form
+  thanksMessage = (By.CSS_SELECTOR, ".sweet-alert h2")
+  paymentDetails = (By.CSS_SELECTOR, ".sweet-alert p")
+  okButton = (By.CSS_SELECTOR, ".sweet-alert .confirm")
+
