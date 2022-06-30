@@ -1,5 +1,5 @@
 from selenium.webdriver.support.ui import WebDriverWait
-
+import json
 class AutoScrollHelper:
     
     def __init__(self, driver, navbarHeight, footerHeight) -> None:
@@ -7,71 +7,82 @@ class AutoScrollHelper:
         self.navbarHeight = navbarHeight
         self.footerHeight = footerHeight
 
-    def scrollTo(self, webElement):
-        self.driver.execute_script(
-            '\
-            (function (global, element, navbarHeigth, footerHeigth) {\
+    def scrollTo(self, webElement, scrollContainer = None):
+        self.driver.execute_script('\
+              (function (global, element, navbarHeigth, footerHeigth, scrollContainer) {\
                 const _navbarHeigth = navbarHeigth || 0;\
                 const _footerHeigth = footerHeigth || 0;\
-            \
-              autoScrollTo(element);\
-            \
-              function autoScrollTo(element) {\
-                const elementPositionInfo = getElementPositionInfo(element);\
-            \
-                if (elementPositionInfo.isInTheViewport) return;\
-            \
-                global.scrollTo({\
-                  top: calculateY(elementPositionInfo),\
-                  left: calculateX(elementPositionInfo)\
-                });\
-              };\
-            \
-              function getElementPositionInfo(element) {\
-                const bounding = element.getBoundingClientRect();\
-                const isBelowTheViewport = bounding.bottom > (global.innerHeight - _footerHeigth || document.documentElement.clientHeight - _footerHeigth);\
-                const isAboveViewPort = bounding.top < 0 || bounding.top < _navbarHeigth;\
-                const isAtTheRight = bounding.right > (global.innerWidth || document.documentElement.clientWidth);\
-                const isAtTheLeft = bounding.left < 0;\
-                const isInTheViewport = !isBelowTheViewport && !isAboveViewPort && !isAtTheRight && !isAtTheLeft;\
-            \
-                return {\
-                  bounding: bounding,\
-                  isBelowTheViewport: isBelowTheViewport,\
-                  isAboveViewPort: isAboveViewPort,\
-                  isAtTheRight: isAtTheRight,\
-                  isAtTheLeft: isAtTheLeft,\
-                  isInTheViewport: isInTheViewport,\
+              \
+                autoScrollTo(element);\
+              \
+                function autoScrollTo(element) {\
+                  const elementPositionInfo = getElementPositionInfo(element);\
+              \
+                  if (elementPositionInfo.isInTheViewport) return;\
+              \
+                  scrollTo(elementPositionInfo, scrollContainer)\
                 };\
-              };\
-            \
-             function calculateY(elementPositionInfo) {\
-                let currentYPosition = global.pageYOffset;\
-            \
-                if (elementPositionInfo.isBelowTheViewport)\
-                  return elementPositionInfo.bounding.y + currentYPosition - _navbarHeigth;\
-            \
-                if (elementPositionInfo.isAboveViewPort)\
-                  return currentYPosition + elementPositionInfo.bounding.y - _navbarHeigth;\
-            \
-                return currentYPosition;\
-              };\
-            \
-              function calculateX(elementPositionInfo) {\
-                let currentXPosition = global.pageXOffset;\
-            \
-                if (elementPositionInfo.isAtTheRight)\
-                  return elementPositionInfo.bounding.x + currentXPosition;\
-            \
-                if (elementPositionInfo.isAtTheLeft)\
-                  return currentXPosition + elementPositionInfo.bounding.x;\
-            \
-                return currentXPosition;\
-              };\
-            })(window, arguments[0], arguments[1], arguments[2]);',
+              \
+                function getElementPositionInfo(element) {\
+                  const bounding = element.getBoundingClientRect();\
+                  const isBelowTheViewport = bounding.bottom > (global.innerHeight - _footerHeigth || document.documentElement.clientHeight - _footerHeigth);\
+                  const isAboveViewPort = bounding.top < 0 || bounding.top < _navbarHeigth;\
+                  const isAtTheRight = bounding.right > (global.innerWidth || document.documentElement.clientWidth);\
+                  const isAtTheLeft = bounding.left < 0;\
+                  const isInTheViewport = !isBelowTheViewport && !isAboveViewPort && !isAtTheRight && !isAtTheLeft;\
+              \
+                  return {\
+                    bounding: bounding,\
+                    isBelowTheViewport: isBelowTheViewport,\
+                    isAboveViewPort: isAboveViewPort,\
+                    isAtTheRight: isAtTheRight,\
+                    isAtTheLeft: isAtTheLeft,\
+                    isInTheViewport: isInTheViewport,\
+                  };\
+                };\
+              \
+                function scrollTo(elementPositionInfo, scrollContainer) {\
+                  if (scrollContainer) {\
+                    scrollContainer.scroll({\
+                      top: calculateY(elementPositionInfo),\
+                      left: calculateX(elementPositionInfo),\
+                    })\
+                  }else{\
+                    global.scrollTo({\
+                      top: calculateY(elementPositionInfo),\
+                      left: calculateX(elementPositionInfo),\
+                    });\
+                  }\
+                };\
+              \
+                function calculateY(elementPositionInfo) {\
+                  let currentYPosition = global.pageYOffset;\
+              \
+                  if (elementPositionInfo.isBelowTheViewport)\
+                    return elementPositionInfo.bounding.y + currentYPosition - _navbarHeigth;\
+              \
+                  if (elementPositionInfo.isAboveViewPort)\
+                    return currentYPosition + elementPositionInfo.bounding.y - _navbarHeigth;\
+              \
+                  return currentYPosition;\
+                };\
+              \
+                function calculateX(elementPositionInfo) {\
+                  let currentXPosition = global.pageXOffset;\
+              \
+                  if (elementPositionInfo.isAtTheRight)\
+                    return elementPositionInfo.bounding.x + currentXPosition;\
+              \
+                  if (elementPositionInfo.isAtTheLeft)\
+                    return currentXPosition + elementPositionInfo.bounding.x;\
+              \
+                  return currentXPosition;\
+                };\
+              })(window, arguments[0], arguments[1], arguments[2], arguments[3]);',
             webElement,
             self.navbarHeight,
-            self.footerHeight)
+            self.footerHeight,
+            scrollContainer)
 
         wait = WebDriverWait(self.driver, 30)
         wait.until(lambda driver:  self.isInTheViewport(webElement))
