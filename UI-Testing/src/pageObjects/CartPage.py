@@ -55,3 +55,13 @@ class CartPage (BasePage):
         self.browserActions.typeInto(self.locators.monthInput, paymentInfo.monthCard, divWithScrollContainer)
         self.browserActions.typeInto(self.locators.yearInput, paymentInfo.yearCard, divWithScrollContainer)
         self.browserActions.click(self.locators.purchaseButton, divWithScrollContainer)
+
+    def getPaymentConfirmationDetails(self):
+        return self.browserActions.getText(self.locators.paymentDetails)
+
+    def getPaymentConfirmationHeader(self):
+        return self.browserActions.getText(self.locators.thanksMessage)
+
+    def closePaymentForm(self):
+        self.browserActions.click(self.locators.okButton)
+

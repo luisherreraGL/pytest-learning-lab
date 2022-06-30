@@ -16,3 +16,9 @@ class CartLocators:
   monthInput = (By.ID, "month")
   yearInput = (By.ID, "year")
   purchaseButton = (By.CSS_SELECTOR, "#orderModal  .btn-primary")
+
+  # Confirm payment form
+  thanksMessage = (By.CSS_SELECTOR, ".sweet-alert h2")
+  paymentDetails = (By.CSS_SELECTOR, ".sweet-alert p")
+  okButton = (By.CSS_SELECTOR, ".sweet-alert .confirm")
+

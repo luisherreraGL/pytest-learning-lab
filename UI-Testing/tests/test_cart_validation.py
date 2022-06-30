@@ -6,12 +6,14 @@ from src.pageObjects.CartPage import CartPage
 from src.assertions.ProductAssertions import ProductAssertions
 from src.sharedSteps.ProductSteps import addLastProduct2CartSteps
 from src.models.PaymentInfo import PaymentInfo
+from src.assertions.PaymentConfirmationAssertions import PaymentConfirmationAssertions
 
 @allure.suite("Cart Validation")
 @allure.sub_suite('Cart')
 @pytest.mark.cart
 class CartTests:
     productAssertions = ProductAssertions()
+    paymentConfirmationAssertions = PaymentConfirmationAssertions()
 
     @allure.description("Add items to cart")
     @allure.severity(allure.severity_level.NORMAL)
@@ -38,7 +40,9 @@ class CartTests:
         addedProducts = []
         productPage = ProductPage(browserActions)
         paymentInfo = PaymentInfo("Leo", "Costa Rica", "Heredia", "99999999", 7, 2022)
-        
+
+        expectedThanksMessage = "Thank you for your purchase!"
+   
         addedProducts.append(addLastProduct2CartSteps(browserActions, "Laptops"))
         addedProducts.append(addLastProduct2CartSteps(browserActions, "Monitors"))
 
@@ -47,13 +51,21 @@ class CartTests:
         cartPage.waitUntilPageLoaded()
 
         cartTotal = cartPage.getCartTotal()
-
         cartPage.openPaymentForm()
-
         paymentTotal = cartPage.getPaymentTotal()
-
         assert cartTotal == paymentTotal, "Error: Cart total doesn't match Payment total"
-
-      
+        
         cartPage.submitPaymentForm(paymentInfo)
 
+        thankMessage = cartPage.getPaymentConfirmationHeader()
+
+        assert expectedThanksMessage == thankMessage, "Error: Thanks message not shown"
+
+        paymentConfirmationDetails = cartPage.getPaymentConfirmationDetails()
+        self.paymentConfirmationAssertions.validateConfirmationDetails(paymentInfo, paymentTotal, paymentConfirmationDetails)
+
+        cartPage.closePaymentForm()
+
+        homePage = HomePage(browserActions)
+
+        homePage.waitUntilPageLoaded()
