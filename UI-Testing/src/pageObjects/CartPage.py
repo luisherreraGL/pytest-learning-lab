@@ -34,3 +34,19 @@ class CartPage (BasePage):
     
     def getCartTotal(self):
         return float(self.browserActions.getText(self.locators.totalAmount))
+
+
+    def openPaymentForm(self):
+        self.browserActions.click(self.locators.placeOrderButton)
+        
+    def getPaymentTotal(self):
+        return float(self.browserActions.getText(self.locators.placeOrderTotal))
+      
+    def submitPaymentForm(self, paymentInfo):
+        self.browserActions.typeInto(self.locators.nameInput, paymentInfo.name)
+        self.browserActions.typeInto(self.locators.countryInput, paymentInfo.country)
+        self.browserActions.typeInto(self.locators.cityInput, paymentInfo.city)
+        self.browserActions.typeInto(self.locators.cardInput, paymentInfo.card)
+        self.browserActions.typeInto(self.locators.monthInput, paymentInfo.monthCard)
+        self.browserActions.typeInto(self.locators.yearInput, paymentInfo.yearCard)
+        self.browserActions.click(self.locators.purchaseButton)

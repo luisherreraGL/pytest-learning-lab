@@ -43,7 +43,7 @@ class BrowserActions:
         self.scrollTo(element)
         element.click()
 
-    def type_into(self, locator, text):
+    def typeInto(self, locator, text):
         self.waitForAvailability(locator)
         element = self.findElement(locator)
         self.scrollTo(element)
