@@ -13,6 +13,10 @@ class CartPage (BasePage):
         super().__init__(browserActions)
         self.navbar = Navbar(browserActions)
 
+    def open(self):
+        super().open()
+        self.browserActions.pauseExecution(2)
+
     def getProductsData(self):
         productList = []
         self._waitForTableProducts()
@@ -35,12 +39,12 @@ class CartPage (BasePage):
     def getCartTotal(self):
         return float(self.browserActions.getText(self.locators.totalAmount))
 
-
     def openPaymentForm(self):
         self.browserActions.click(self.locators.placeOrderButton)
         
     def getPaymentTotal(self):
-        return float(self.browserActions.getText(self.locators.placeOrderTotal))
+        totalOrder = self.browserActions.getText(self.locators.placeOrderTotal)
+        return float(totalOrder.split()[1])
       
     def submitPaymentForm(self, paymentInfo):
         self.browserActions.typeInto(self.locators.nameInput, paymentInfo.name)

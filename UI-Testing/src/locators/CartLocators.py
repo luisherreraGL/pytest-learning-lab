@@ -15,4 +15,4 @@ class CartLocators:
   cardInput = (By.ID, "card")
   monthInput = (By.ID, "month")
   yearInput = (By.ID, "year")
-  purchaseButton = (By.CSS_SELECTOR, ".modal-footer .btn-primary")
+  purchaseButton = (By.CSS_SELECTOR, "#orderModal  .btn-primary")
