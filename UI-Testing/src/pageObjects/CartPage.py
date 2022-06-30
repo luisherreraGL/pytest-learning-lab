@@ -15,7 +15,7 @@ class CartPage (BasePage):
 
     def open(self):
         super().open()
-        self.browserActions.pauseExecution(2)
+        self.browserActions.pauseExecution(3)
 
     def getProductsData(self):
         productList = []
@@ -47,10 +47,11 @@ class CartPage (BasePage):
         return float(totalOrder.split()[1])
       
     def submitPaymentForm(self, paymentInfo):
-        self.browserActions.typeInto(self.locators.nameInput, paymentInfo.name)
-        self.browserActions.typeInto(self.locators.countryInput, paymentInfo.country)
-        self.browserActions.typeInto(self.locators.cityInput, paymentInfo.city)
-        self.browserActions.typeInto(self.locators.cardInput, paymentInfo.card)
-        self.browserActions.typeInto(self.locators.monthInput, paymentInfo.monthCard)
-        self.browserActions.typeInto(self.locators.yearInput, paymentInfo.yearCard)
-        self.browserActions.click(self.locators.purchaseButton)
+        divWithScrollContainer = self.locators.modalContainer
+        self.browserActions.typeInto(self.locators.nameInput, paymentInfo.name, divWithScrollContainer)
+        self.browserActions.typeInto(self.locators.countryInput, paymentInfo.country, divWithScrollContainer)
+        self.browserActions.typeInto(self.locators.cityInput, paymentInfo.city, divWithScrollContainer)
+        self.browserActions.typeInto(self.locators.cardInput, paymentInfo.card, divWithScrollContainer)
+        self.browserActions.typeInto(self.locators.monthInput, paymentInfo.monthCard, divWithScrollContainer)
+        self.browserActions.typeInto(self.locators.yearInput, paymentInfo.yearCard, divWithScrollContainer)
+        self.browserActions.click(self.locators.purchaseButton, divWithScrollContainer)
