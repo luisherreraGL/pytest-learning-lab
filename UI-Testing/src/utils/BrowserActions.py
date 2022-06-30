@@ -2,6 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from src.utils.AutoScrollHelper import AutoScrollHelper
 from selenium.webdriver.common.alert import Alert
+import time 
 
 class BrowserActions:
     _DEFAULT_WAIT_TIME_SECONDS = 10
@@ -13,6 +14,9 @@ class BrowserActions:
         self.baseurl = baseurl
         self.autoScrollHelper = AutoScrollHelper(driver, self._DEFAULT_NAVBAR_HEIGHT, self._DEFAULT_FOOTER_HEIGHT)
         self.alert = Alert(driver)
+
+    def pauseExecution(self, seconds):
+        time.sleep(seconds)
 
     def getAlertText (self):
         alert = self.waitFor([EC.alert_is_present()])
@@ -43,7 +47,7 @@ class BrowserActions:
         self.scrollTo(element)
         element.click()
 
-    def type_into(self, locator, text):
+    def typeInto(self, locator, text):
         self.waitForAvailability(locator)
         element = self.findElement(locator)
         self.scrollTo(element)
