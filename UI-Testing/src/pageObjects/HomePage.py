@@ -52,7 +52,9 @@ class HomePage (BasePage):
         element.click()
 
     def openLastProduct(self):
-        self.waitUntilPageRendersTheProducts()
+        # self.waitUntilPageRendersTheProducts()
+        self.browserActions.pauseExecution(1)
+
         products = self.browserActions.findElements(self.locators.productsContainers)
         lastProduct = products[-1]
         productLink = self.browserActions.findInsideElement(lastProduct, self.locators.product_link)
