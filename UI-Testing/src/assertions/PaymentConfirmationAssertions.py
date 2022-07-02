@@ -1,16 +1,24 @@
 from datetime import datetime
-import re
+from src.utils.DatetimeFunctions import add_months
+from src.assertions.CommonAssertions import CommonAssertions
+from allure import step
+
 
 class PaymentConfirmationAssertions():
+    commonAssertions = CommonAssertions()
+
+    @step("Validate payment confirmation details")
     def validateConfirmationDetails(self, paymentInfo, paymentTotal, confirmationMessageDetails):
 
         dictionary = confirmationMessageDetails.split("\n")
 
-        pat = re.compile(r"^Id: \d+$")
-        assert re.fullmatch(pat, dictionary[0]), "Error: no payment ID included"
+        self.commonAssertions.assertEqualToRegex(r"^Id: \d+$", dictionary[0], "Payment ID")
 
-        assert dictionary[1] == "Amount: {0} USD".format(int(paymentTotal)), "Error: Payment Amount not match Buy Amount"
-        assert dictionary[2] == "Card Number: {0}".format(paymentInfo.card), "Error: Payment Card number not match"
-        assert dictionary[3] == "Name: {0}".format(paymentInfo.name), "Error: Payment Name not match"
-        assert dictionary[4] == "Date: 30/5/2022", "Error: Payment Date not match"
-    #    assert dictionary[4] == "Date: {0}".format(datetime.today().strftime('%d/%m/%Y'))
+        self.commonAssertions.assertEqualString(dictionary[1], "Amount: {0} USD".format(int(paymentTotal)), "Payment Amount")
+        self.commonAssertions.assertEqualString(dictionary[2], "Card Number: {0}".format(paymentInfo.card), "Payment Card")
+        self.commonAssertions.assertEqualString(dictionary[3], "Name: {0}".format(paymentInfo.name), "Payment Name")
+
+        paymentDate = 'Date: {dt.day}/{dt.month}/{dt.year}'.format(dt = add_months(datetime.now(), -1)) 
+        self.commonAssertions.assertEqualString(dictionary[4], paymentDate, "Payment Date")
+
+        

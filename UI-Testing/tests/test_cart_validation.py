@@ -7,6 +7,7 @@ from src.assertions.ProductAssertions import ProductAssertions
 from src.sharedSteps.ProductSteps import addLastProduct2CartSteps
 from src.models.PaymentInfo import PaymentInfo
 from src.assertions.PaymentConfirmationAssertions import PaymentConfirmationAssertions
+from src.assertions.CommonAssertions import CommonAssertions
 
 @allure.suite("Cart Validation")
 @allure.sub_suite('Cart')
@@ -14,6 +15,7 @@ from src.assertions.PaymentConfirmationAssertions import PaymentConfirmationAsse
 class CartTests:
     productAssertions = ProductAssertions()
     paymentConfirmationAssertions = PaymentConfirmationAssertions()
+    commonAssertions = CommonAssertions()
 
     @allure.description("Add items to cart")
     @allure.severity(allure.severity_level.NORMAL)
@@ -52,14 +54,14 @@ class CartTests:
 
         cartTotal = cartPage.getCartTotal()
         cartPage.openPaymentForm()
+
         paymentTotal = cartPage.getPaymentTotal()
-        assert cartTotal == paymentTotal, "Error: Cart total doesn't match Payment total"
-        
+        self.commonAssertions.assertEqualString(paymentTotal, cartTotal, "Payment Total")
+
         cartPage.submitPaymentForm(paymentInfo)
 
         thankMessage = cartPage.getPaymentConfirmationHeader()
-
-        assert expectedThanksMessage == thankMessage, "Error: Thanks message not shown"
+        self.commonAssertions.assertEqualString(thankMessage, expectedThanksMessage, "Thanks message")
 
         paymentConfirmationDetails = cartPage.getPaymentConfirmationDetails()
         self.paymentConfirmationAssertions.validateConfirmationDetails(paymentInfo, paymentTotal, paymentConfirmationDetails)
