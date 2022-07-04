@@ -1,15 +1,14 @@
-
+from allure import step
+from src.assertions.CommonAssertions import CommonAssertions
 class ProductAssertions():
-    def equalLists(self, list1, list2):
-        """ list are ordered by the first column """
-        if len(list1) != len(list2):
-            assert False, "Product lists don't have the same lenght"
-        
-        list1.sort(key=lambda x: x.name)
-        list2.sort(key=lambda x: x.name)
+    commonAssertions = CommonAssertions()
 
-        assert list1 == list2, "Product lists are different"
-
+    @step("Comparing items list cart with added items list")
+    def validateitemsCartList(self, list1, list2):
+        sortingFunc = lambda x: x.name
+        self.commonAssertions.equalLists(list1, list2, sortingFunc)
+       
+    @step("Comparing total amount against selected items amount")
     def priceSumIsEqual(self, list, total):
         listTotal = sum(product.price for product in list)
-        assert listTotal == total, "Total price are not equal"
+        assert listTotal == total, "Amounts are not equal"

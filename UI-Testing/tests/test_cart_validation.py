@@ -32,7 +32,7 @@ class CartTests:
 
         cartItems = cartPage.getProductsData()
         cartTotal = cartPage.getCartTotal()
-        self.productAssertions.equalLists(cartItems, addedProducts)
+        self.productAssertions.validateitemsCartList(cartItems, addedProducts)
         self.productAssertions.priceSumIsEqual(addedProducts, cartTotal)
 
     @allure.description("Buy items in cart")

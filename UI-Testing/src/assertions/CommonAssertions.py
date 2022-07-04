@@ -13,3 +13,14 @@ class CommonAssertions():
        errorMessage = "Error: {0} not comply regex expression: {1} value {2}".format(field, regexpression, value)
        pat = re.compile(regexpression)
        assert re.fullmatch(pat, value), errorMessage
+
+    def equalLists(self, list1, list2, sortingFunc = None):
+        """ list are ordered by the first column or sortingFunc """
+        if len(list1) != len(list2):
+            assert False, "Lists don't have the same lenght"
+
+        if sortingFunc: 
+            list1.sort(key=sortingFunc)
+            list2.sort(key=sortingFunc)
+
+        assert list1 == list2, "Lists are different"
