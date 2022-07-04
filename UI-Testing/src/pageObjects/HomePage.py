@@ -16,34 +16,11 @@ class HomePage (BasePage):
     def clickOnNext(self):
         self.browserActions.click(self.locators.paginationNextButton)
 
-    @step("Wait for products renderization")
-    def waitUntilPageRendersTheProducts(self):
-        self._waitForProducts()
-        self._waitForProductsImages()
-
     @step("Open Product : {1}")
     def openProduct(self, productName):
         element = self.browserActions.findElementInside(self.locators.productsTable, self.locators.productLink(productName))
         self.browserActions.scrollTo(element)
         element.click()
-
-    def _waitForProductsImages (self):
-        def customCondition (driver):
-            images = self.browserActions.findElements(self.locators.productsImages)
-            results = map(lambda image: self.browserActions.isImageLoaded(image) ,images)
-            results_list = list(results)
-            allTrue = all(results_list)
-
-            return  allTrue
-    
-        self.browserActions.waitFor([customCondition], "The page did not renders the products")
-
-    def _waitForProducts(self):
-        def customCondition (driver):
-            products = self.browserActions.findElements(self.locators.productsContainers)
-            return len(products) > 0
-    
-        self.browserActions.waitFor([customCondition], "The page did not renders the products")
 
     @step("Select Category : {1}")
     def selectCategory(self, category):
@@ -51,14 +28,11 @@ class HomePage (BasePage):
         self.browserActions.scrollTo(element)
         element.click()
 
+    @step("Open last product page")
     def openLastProduct(self):
-        # self.waitUntilPageRendersTheProducts()
         self.browserActions.pauseExecution(1)
 
         products = self.browserActions.findElements(self.locators.productsContainers)
         lastProduct = products[-1]
         productLink = self.browserActions.findInsideElement(lastProduct, self.locators.product_link)
         productLink.click()
-
-    
-

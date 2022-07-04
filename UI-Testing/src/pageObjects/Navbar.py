@@ -7,7 +7,7 @@ class Navbar (Base):
     def __init__(self, browserActions) -> None:
         super().__init__(browserActions)
 
-    @step("Click on {1} link")
+    @step("Navigate to {1}")
     def clickOnLink(self, linkName):
         element = self.browserActions.findElementInside(self.locators.navbarContainer, self.locators.navbarLink(linkName))
         self.browserActions.scrollTo(element)

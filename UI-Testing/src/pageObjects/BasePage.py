@@ -24,6 +24,7 @@ class BasePage (Base):
          self.browserActions.waitForPageLoaded(path, self.title);
 
     def getAlertText(self):
-        alertText = self.browserActions.getAlertText()
+        return self.browserActions.getAlertText()
+
+    def closeAlert(self):
         self.browserActions.closeAlert()
-        return alertText

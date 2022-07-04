@@ -13,6 +13,7 @@ class ProductPage (BasePage):
         super().__init__(browserActions)
         self.navbar = Navbar(browserActions)
 
+    @step("Get product data")
     def getProductData(self):
         name = self.browserActions.getText(self.locators.name)
         price = self.browserActions.getText(self.locators.price)
@@ -22,7 +23,6 @@ class ProductPage (BasePage):
         priceText =  price[1:]
         return float(priceText.split()[0])
 
+    @step("Adding product to cart")
     def addProduct2Cart(self):
         self.browserActions.click(self.locators.addButton)
-    
-        
