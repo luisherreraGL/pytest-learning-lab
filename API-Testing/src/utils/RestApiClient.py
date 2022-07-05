@@ -2,9 +2,11 @@ import requests
 import json
 from src.utils.ApiResponse import ApiResponse
 
-class RestApiClient():
+class RestApiClient():    
     def __init__(self, baseURL):
         self.baseURL = baseURL
+        self.defaultHeaders = {'Content-Type': 'application/json'}
+
 
     def get(self, path, parameters = None, header = None):
         response = requests.get(url = self.buildURL(path), params=parameters, headers=self.buildHeaders(header))
@@ -14,11 +16,11 @@ class RestApiClient():
         return self.baseURL + path
 
     def buildHeaders(self, headers):
-        defaultHeaders = {'Content-Type': 'application/json'}
         if headers:
-            defaultHeaders.update(headers)
+            return  {**self.defaultHeaders,**headers}
+        
+        return  self.defaultHeaders
 
-        return defaultHeaders
 
     def post(self, path, data, parameters = None, header = None):
         response = requests.post(url = self.buildURL(path), data = json.dumps(data), params=parameters, headers=self.buildHeaders(header))
@@ -31,3 +33,9 @@ class RestApiClient():
     def delete(self, path, data= None, parameters = None, header = None):
         response = requests.delete(url = self.buildURL(path), data = json.dumps(data), params=parameters, headers=self.buildHeaders(header))
         return ApiResponse(response)
+
+    def addDefaultHeaders(self, headers):
+        if not isinstance(headers, dict):
+            raise Exception("Headers is not a dict")
+
+        self.defaultHeaders.update(headers)
