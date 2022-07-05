@@ -6,4 +6,4 @@ class PostPetTests(BasePet):
         payloadJson = PetDataGenerator().getNewPet()
         
         response = self.client.post(self.path, payloadJson).assertStatus(200).getJson()
-        assert response == payloadJson, "Error: actual & expected dictionaries are not equal"
+        self.commonAssertions.compareDictionaries(payloadJson, response)

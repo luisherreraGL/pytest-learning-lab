@@ -11,4 +11,4 @@ class DeletePetTests(BasePet):
                             }
 
         response = self.client.delete(self.path + petId).assertStatus(200).getJson()
-        assert response == expectedResponse, "Error: actual & expected dictionaries are not equal"
+        self.commonAssertions.compareDictionaries(expectedResponse, response)
