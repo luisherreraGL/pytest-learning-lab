@@ -1,14 +1,14 @@
 import pytest
 from src.utils.RestApiClient import RestApiClient
 from src.dataGenerators.PetDataGenerator import PetDataGenerator
-from src.config.EnvSettings import EnvSettings
+from src.config.SettingsEnv import SettingsEnv
 
 def pytest_html_report_title(report):
     report.title = "API Testing Report"
 
 @pytest.fixture(scope="session")
 def environment_config():
-    return EnvSettings().getEnvConfig()
+    return SettingsEnv().getEnvConfig()
 
 @pytest.fixture
 def baseURL(environment_config):

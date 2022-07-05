@@ -1,9 +1,9 @@
 from src.utils.RestApiClient import RestApiClient
 from src.config.ApiConfig import credentials
-from src.config.EnvSettings import EnvSettings
+from src.config.SettingsEnv import SettingsEnv
 import pytest
 class BasePet():
-    client =  RestApiClient(EnvSettings().getEnvConfig()["baseurl"])
+    client =  RestApiClient(SettingsEnv().getEnvConfig()["baseurl"])
     path = 'v2/pet/'
 
     @pytest.fixture(autouse=True)

@@ -1,4 +1,5 @@
-*env
+*venv
 reports
+assets
+*env
 report*
-assests
