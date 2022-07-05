@@ -1,37 +1,14 @@
-import requests
-from src.utils.RestApiClient import RestApiClient
-
-class GetPetTests():
-    client = RestApiClient('https://petstore.swagger.io/')
-    path = 'v2/pet/'
+from test.pet.BasePet import BasePet
+class GetPetTests(BasePet):
 
     def test_petNotFound(self):
         expectedJson = {'code': 1, 'type': 'error', 'message': 'Pet not found'}
 
-        r = self.client.get(self.path + '30').assertStatus(404).getJson()
-     
-        assert r == expectedJson, "Error: actual & expected dictionaries are not equal"
+        response = self.client.get(self.path + '4789372').assertStatus(404).getJson()
+        assert response == expectedJson, "Error: actual & expected dictionaries are not equal"
 
-    def test_petFound(self):
-        expectedJson = {
-                            "id": 1,
-                            "category": {
-                                "id": 0,
-                                "name": "string"
-                            },
-                            "name": "doggie",
-                            "photoUrls": [
-                                "string"
-                            ],
-                            "tags": [
-                                {
-                                    "id": 0,
-                                    "name": "string"
-                                }
-                            ],
-                            "status": "available"
-                        }
+    def test_petFound(self, insertedNewPet):
+        expectedJson =  insertedNewPet
 
-        r = self.client.get(self.path + '1').assertStatus(200).getJson()
-     
-        assert r == expectedJson, "Error: actual & expected dictionaries are not equal"
+        response = self.client.get(self.path + str(expectedJson['id'])).assertStatus(200).getJson()
+        assert response == expectedJson, "Error: actual & expected dictionaries are not equal"

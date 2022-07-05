@@ -7,8 +7,8 @@ class RestApiClient():
         self.baseURL = baseURL
 
     def get(self, path, parameters = None, header = None):
-        r = requests.get(url = self.buildURL(path), params=parameters, headers=self.buildHeaders(header))
-        return ApiResponse(r)
+        response = requests.get(url = self.buildURL(path), params=parameters, headers=self.buildHeaders(header))
+        return ApiResponse(response)
 
     def buildURL(self, path):
         return self.baseURL + path
@@ -20,7 +20,14 @@ class RestApiClient():
 
         return defaultHeaders
 
-
     def post(self, path, data, parameters = None, header = None):
-        r = requests.post(url = self.buildURL(path), data = json.dumps(data), params=parameters, headers=self.buildHeaders(header))
-        return ApiResponse(r)
+        response = requests.post(url = self.buildURL(path), data = json.dumps(data), params=parameters, headers=self.buildHeaders(header))
+        return ApiResponse(response)
+
+    def put(self, path, data, parameters = None, header = None):
+        response = requests.put(url = self.buildURL(path), data = json.dumps(data), params=parameters, headers=self.buildHeaders(header))
+        return ApiResponse(response)
+
+    def delete(self, path, data= None, parameters = None, header = None):
+        response = requests.delete(url = self.buildURL(path), data = json.dumps(data), params=parameters, headers=self.buildHeaders(header))
+        return ApiResponse(response)
