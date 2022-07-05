@@ -11,4 +11,4 @@ class GetPetTests(BasePet):
         expectedJson =  insertedNewPet
 
         response = self.client.get(self.path + str(expectedJson['id'])).assertStatus(200).getJson()
-        assert response == expectedJson, "Error: actual & expected dictionaries are not equal"
+        self.commonAssertions.compareDictionaries(expectedJson, response)
