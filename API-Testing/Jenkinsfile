@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+    
+    environment{
+        def imageName = "python-api-testing"
+        def containerName = "python-api-testing-${env.BUILD_NUMBER}"
+    }
+    
+    stages {
+        
+        stage("Clean Up"){
+            steps {
+                deleteDir()
+            }
+        }
+        
+        stage("Clone Repository"){
+            steps {
+                sh "git clone https://github.com/luisherreraGL/pytest-learning-lab.git"
+            }
+        }
+
+        stage("Build Image"){
+            steps {
+                dir('pytest-learning-lab/API-Testing'){
+                    sh "docker build -t ${imageName} . "
+                }
+            }
+        }
+        
+        stage("Execute test"){
+            steps {
+                dir('pytest-learning-lab/API-Testing'){
+                    sh "docker run -d --name ${containerName} ${imageName}"
+                }
+            }
+        }
+        
+        stage("Copy Report file"){
+            steps {
+                dir('pytest-learning-lab/API-Testing'){
+                    sh "rm -rf report; mkdir report"
+                    sh "docker cp ${containerName}:/python-api-testing/report/report.html ./report"
+                }
+            }
+        }
+     }
+    post {
+        always {
+            echo "Cleanup"
+            sh "docker stop ${containerName}"
+            sh "docker rm ${containerName}"
+            //docker rmi $IMAGE_NAME
+          // publish html
+          publishHTML target: [
+              allowMissing: false,
+              alwaysLinkToLastBuild: false,
+              keepAll: true,
+              reportDir: 'pytest-learning-lab/API-Testing/report',
+              reportFiles: 'report.html',
+              reportName: 'API Testing Report'
+            ]        }
+    }
+}
