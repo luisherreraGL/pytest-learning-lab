@@ -7,6 +7,6 @@ WORKDIR /python-api-testing
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN ["pytest", "-v", "--junitxml=reports/result.xml"]
+RUN ["pytest", "-v", "--html=./report/report.html", "--self-contained-html"]
 
-CMD bash
+CMD tail -f /dev/null
