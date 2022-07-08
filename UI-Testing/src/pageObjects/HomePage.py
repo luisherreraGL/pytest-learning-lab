@@ -30,7 +30,7 @@ class HomePage (BasePage):
 
     @step("Open last product page")
     def openLastProduct(self):
-        self.browserActions.pauseExecution(1)
+        self.browserActions.pauseExecution(3)
 
         products = self.browserActions.findElements(self.locators.productsContainers)
         lastProduct = products[-1]

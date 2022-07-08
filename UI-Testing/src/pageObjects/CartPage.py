@@ -14,8 +14,8 @@ class CartPage (BasePage):
         super().__init__(browserActions)
         self.navbar = Navbar(browserActions)
 
-    def open(self):
-        super().open()
+    def waitUntilPageLoaded(self):
+        super().waitUntilPageLoaded()
         self.browserActions.pauseExecution(3)
 
     @step("Getting all cart items data")
