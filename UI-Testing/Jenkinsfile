@@ -31,7 +31,7 @@ pipeline {
         stage("Execute test"){
             steps {
                 dir('pytest-learning-lab/UI-Testing'){
-                    sh "docker run -d --name ${containerName} ${imageName} --alluredir="reports" --headless=Y"
+                    sh "docker run -d --name ${containerName} ${imageName} --alluredir=\"reports\" --headless=Y"
                 }
             }
         }
