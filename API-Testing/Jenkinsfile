@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    parameters {
+        choice (choices: ["dev", "qa"], description: "Wich environment to test", name: "environment" )
+        string(defaultValue: "regression", description: "Test tags to execute", name: "tags" )
+    }
     
     environment{
         def imageName = "python-api-testing"
@@ -31,7 +36,7 @@ pipeline {
         stage("Execute test"){
             steps {
                 dir('pytest-learning-lab/API-Testing'){
-                    sh "docker run -d --name ${containerName} ${imageName}"
+                    sh "docker run -d --name ${containerName}  -e \"ENV=${params.environment}\" ${imageName} --html=./report/report.html --self-contained-html"
                 }
             }
         }
