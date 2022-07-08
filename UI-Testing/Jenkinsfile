@@ -40,7 +40,7 @@ pipeline {
             steps {
                 dir('pytest-learning-lab/UI-Testing'){
                     sh "rm -rf report; mkdir report"
-                    sh "docker cp ${containerName}:/python-ui-testing/report/ ./report/"
+                    sh "docker cp ${containerName}:/python-UI-testing/report ./report"
                 }
             }
         }
@@ -51,13 +51,15 @@ pipeline {
             sh "docker stop ${containerName}"
             sh "docker rm ${containerName}"
             //docker rmi $IMAGE_NAME
-            allure([
-                    includeProperties: false,
-                    jdk: '',
-                    properties: [],
-                    reportBuildPolicy: 'ALWAYS',
-                    results: [[path: '/report']]
-            ])
+            script {
+                allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'target/allure-results']]
+                ])
+            }
         }
     }
 }
