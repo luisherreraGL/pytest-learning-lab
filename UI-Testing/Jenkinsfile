@@ -31,7 +31,7 @@ pipeline {
         stage("Execute test"){
             steps {
                 dir('pytest-learning-lab/UI-Testing'){
-                    sh "docker run -d --name ${containerName} ${imageName} --alluredir=\"reports\" --headless=Y"
+                    sh "docker run -d --name ${containerName} ${imageName} --alluredir=\"report\" --headless=Y"
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 dir('pytest-learning-lab/UI-Testing'){
                     sh "rm -rf report; mkdir report"
-                    //sh "docker cp ${containerName}:/python-api-testing/report/report.html ./report"
+                    sh "docker cp ${containerName}:/python-ui-testing/report/ ./report/"
                 }
             }
         }
@@ -51,15 +51,13 @@ pipeline {
             sh "docker stop ${containerName}"
             sh "docker rm ${containerName}"
             //docker rmi $IMAGE_NAME
-          // publish html
-     /*     publishHTML target: [
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: true,
-              reportDir: 'pytest-learning-lab/API-Testing/report',
-              reportFiles: 'report.html',
-              reportName: 'API Testing Report'
-            ]*/        
+            allure([
+                    includeProperties: false,
+                    jdk: '',
+                    properties: [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: '/report']]
+            ])
         }
     }
 }
