@@ -17,12 +17,10 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 ENV DISPLAY=:99
 #>>>>>>>>>>>>>>>>INSTALL CHROME >>>>>>>>>>>>>>>>
 
-COPY . /python-UI-testing
+COPY . /python-ui-testing
 
-WORKDIR /python-UI-testing
+WORKDIR /python-ui-testing
 
 RUN pip install --no-cache-dir -r requirements.txt
-
-ENTRYPOINT  ["pytest"] 
 
 CMD tail -f /dev/null
