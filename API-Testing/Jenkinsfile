@@ -36,7 +36,7 @@ pipeline {
         stage("Execute Tests"){
             steps {
                 dir('pytest-learning-lab/API-Testing'){
-                    sh "docker run -d --name ${containerName} ${imageName}"
+                    sh "docker run -d --env ENV=${params.environment} --name ${containerName} ${imageName}"
                     
                     script{
                         if(params.tag == "regression"){
