@@ -20,18 +20,19 @@ pipeline {
             }
         }
 
-        stage("Build  & Execute Test"){
+        stage("Build Image"){
             steps {
                 dir('pytest-learning-lab/API-Testing'){
-                    sh "docker build -t ${imageName} . --build-arg TAG=all --build-arg ARG_ENV=dev"
+                    sh "docker build -t ${imageName}"
                 }
             }
         }
         
-        stage("Run Container"){
+        stage("Execute Tests"){
             steps {
                 dir('pytest-learning-lab/API-Testing'){
                     sh "docker run -d --name ${containerName} ${imageName}"
+                    sh "docker exec -it ${containerName}  pytest --html=./report/report.html --self-contained-html"
                 }
             }
         }
