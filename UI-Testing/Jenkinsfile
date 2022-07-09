@@ -65,7 +65,7 @@ pipeline {
                         jdk: '',
                         properties: [],
                         reportBuildPolicy: 'ALWAYS',
-                        results: [[path: 'report']]
+                        results: [[path: 'pytest-learning-lab/UI-Testing/report']]
                 ])
             }   
         }
