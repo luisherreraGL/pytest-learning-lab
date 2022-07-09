@@ -1,6 +1,11 @@
 pipeline {
     agent any
     
+    parameters {
+        choice (choices: ["dev", "qa"], description: "Wich environment to test", name: "environment" )
+        string(defaultValue: "regression", description: "Test tags to execute", name: "tag" )
+    }
+    
     environment{
         def imageName = "python-api-testing"
         def containerName = "python-api-testing-${env.BUILD_NUMBER}"
@@ -32,7 +37,14 @@ pipeline {
             steps {
                 dir('pytest-learning-lab/API-Testing'){
                     sh "docker run -d --name ${containerName} ${imageName}"
-                    sh "docker exec -it ${containerName}  pytest --html=./report/report.html --self-contained-html"
+                    
+                    script{
+                        if(params.tag == "regression"){
+                            sh "docker exec -i ${containerName}  pytest --html=./report/report.html --self-contained-html"
+                        }else{
+                            sh "docker exec -i ${containerName}  pytest --html=./report/report.html --self-contained-html -m ${params.tags}"
+                        }
+                    }
                 }
             }
         }
