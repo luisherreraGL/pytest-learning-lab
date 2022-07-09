@@ -36,7 +36,7 @@ pipeline {
             }
         }
         
-        stage("Copy Report file"){
+        stage("Copy Report file "){
             steps {
                 dir('pytest-learning-lab/API-Testing'){
                     sh "rm -rf report; mkdir report"
