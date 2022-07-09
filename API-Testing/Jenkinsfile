@@ -67,6 +67,7 @@ pipeline {
               reportDir: 'pytest-learning-lab/API-Testing/report',
               reportFiles: 'report.html',
               reportName: 'API Testing Report'
-            ]        }
+            ]        
+        }
     }
 }
