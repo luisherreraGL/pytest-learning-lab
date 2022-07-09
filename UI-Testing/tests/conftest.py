@@ -32,18 +32,35 @@ def pytest_addoption(parser):
         default="dev",
         choices=("dev", "qa"),
         help ="Define environment to execute test")
+    
+    parser.addoption("--headless", 
+        action="store",
+        default="N",
+        choices=("Y", "N"),
+        help ="Execute test cases in headless mode")
 
 @pytest.fixture(scope="session")
 def env(request):
     return request.config.getoption("--env")
 
 @pytest.fixture(scope="session")
+def isHeadless(request):
+    return request.config.getoption("--headless")
+
+@pytest.fixture(scope="session")
 def environment_config(env):
     return ConfigEnv(env)
 
 @pytest.fixture()
-def webDriver():
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+def webDriver(isHeadless):
+    chrome_options = None
+    if isHeadless == "Y":
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
     driver.maximize_window()
     yield driver
     driver.quit()

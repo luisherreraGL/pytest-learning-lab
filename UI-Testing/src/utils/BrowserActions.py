@@ -19,7 +19,7 @@ class BrowserActions:
         time.sleep(seconds)
 
     def getAlertText (self):
-        alert = self.waitFor([EC.alert_is_present()])
+        self.waitFor([EC.alert_is_present()])
         return self.alert.text
 
     def closeAlert(self):
