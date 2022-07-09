@@ -53,7 +53,7 @@ pipeline {
         always {
             dir('pytest-learning-lab/UI-Testing'){
                 sh "rm -rf report; mkdir report"
-                sh "docker cp ${containerName}:/python-ui-testing/report/report.html ./report"
+                sh "docker cp ${containerName}:/python-ui-testing/report ./report"
             }
             echo "Cleanup"
             sh "docker stop ${containerName}"
