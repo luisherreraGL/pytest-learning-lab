@@ -23,7 +23,7 @@ pipeline {
         stage("Build Image"){
             steps {
                 dir('pytest-learning-lab/API-Testing'){
-                    sh "docker build -t ${imageName}"
+                    sh "docker build -t ${imageName} ."
                 }
             }
         }
