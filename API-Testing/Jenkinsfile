@@ -42,7 +42,7 @@ pipeline {
                         if(params.tag == "regression"){
                             sh "docker exec -i ${containerName}  pytest --html=./report/report.html --self-contained-html"
                         }else{
-                            sh "docker exec -i ${containerName}  pytest --html=./report/report.html --self-contained-html -m ${params.tags}"
+                            sh "docker exec -i ${containerName}  pytest --html=./report/report.html --self-contained-html -m ${params.tag}"
                         }
                     }
                 }
