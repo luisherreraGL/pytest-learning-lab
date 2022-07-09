@@ -48,18 +48,13 @@ pipeline {
                 }
             }
         }
-        
-        stage("Copy Report file "){
-            steps {
-                dir('pytest-learning-lab/API-Testing'){
-                    sh "rm -rf report; mkdir report"
-                    sh "docker cp ${containerName}:/python-api-testing/report/report.html ./report"
-                }
-            }
-        }
      }
     post {
         always {
+            dir('pytest-learning-lab/API-Testing'){
+                sh "rm -rf report; mkdir report"
+                sh "docker cp ${containerName}:/python-api-testing/report/report.html ./report"
+            }
             echo "Cleanup"
             sh "docker stop ${containerName}"
             sh "docker rm ${containerName}"
