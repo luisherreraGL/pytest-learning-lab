@@ -1,7 +1,6 @@
 FROM python:3.10.5
 
-ARG ARG_ENV=dev
-ENV ENV=$ARG_ENV
+ENV ENV=dev
 
 COPY . /python-api-testing
 
